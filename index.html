@@ -2,9 +2,32 @@
 <html lang="es" class="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Finanzas & Inventario</title>
 <meta name="description" content="Administración financiera e inventario local (LocalStorage)">
+<!-- iPhone / iOS: app de pantalla de inicio desde Safari -->
+<meta name="theme-color" content="#070a10">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Finanzas">
+<meta name="application-name" content="Finanzas">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-startup-image" href="splash/splash-1320x2868.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-1206x2622.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-1242x2208.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com/3.4.16"></script>
@@ -16,11 +39,30 @@
 </script>
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 <style type="text/tailwindcss">
-  :root { color-scheme: dark; }
-  body { background: #070a10; }
+  :root { color-scheme: dark; --sat: env(safe-area-inset-top, 0px); --sab: env(safe-area-inset-bottom, 0px); --sal: env(safe-area-inset-left, 0px); --sar: env(safe-area-inset-right, 0px); }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: #070a10; }
+  body { background: #070a10; overscroll-behavior-y: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  button, a, label, select, summary { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .pt-safe { padding-top: var(--sat); }
+  .pb-safe { padding-bottom: var(--sab); }
+  .px-safe { padding-left: max(1rem, var(--sal)); padding-right: max(1rem, var(--sar)); }
+  @media (min-width: 1024px) { .px-safe { padding-left: 2rem; padding-right: 2rem; } }
+  /* Espacio inferior para la barra de pestañas en iPhone */
+  .main-pad { padding-bottom: calc(6.5rem + var(--sab)); }
+  @media (min-width: 1024px) { .main-pad { padding-bottom: 4rem; } }
+  .toast-pos { bottom: calc(5.5rem + var(--sab)); }
+  @media (min-width: 1024px) { .toast-pos { bottom: 1rem; } }
+  body.kb-open #tabbar { transform: translateY(110%); }
+  body.modal-open { overflow: hidden; }
+  .sheet { max-height: calc(100dvh - var(--sat) - 12px); overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding-bottom: var(--sab); }
+  @media (min-width: 640px) { .sheet { max-height: 92dvh; padding-bottom: 0; } }
+  /* iOS: entradas de fecha y selects con apariencia consistente */
+  input[type=date] { -webkit-appearance: none; appearance: none; min-height: 2.5rem; display: block; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+  select.inp { -webkit-appearance: none; appearance: none; padding-right: 2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .6rem center; }
   @layer components {
     .panel { @apply bg-[#0d121b] border border-white/[0.06] rounded-2xl; }
-    .inp { @apply w-full bg-[#0a0e15] border border-white/10 rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20 transition disabled:opacity-50 disabled:cursor-not-allowed; }
+    .inp { @apply w-full bg-[#0a0e15] border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-400/60 focus:ring-2 focus:ring-indigo-500/20 transition disabled:opacity-50 disabled:cursor-not-allowed; }
     .lbl { @apply block text-xs font-medium text-slate-400 mb-1.5; }
     .hint { @apply mt-1 text-[11px] text-slate-500; }
     .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed; }
@@ -28,8 +70,8 @@
     .btn-ghost { @apply bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 border border-white/10; }
     .btn-danger { @apply bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20; }
     .btn-danger-solid { @apply bg-rose-500 hover:bg-rose-400 text-white; }
-    .btn-sm { @apply px-2.5 py-1.5 text-xs; }
-    .icon-btn { @apply inline-flex items-center justify-center w-8 h-8 shrink-0 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-white/[0.06] transition; }
+    .btn-sm { @apply px-3 py-2 sm:px-2.5 sm:py-1.5 text-xs; }
+    .icon-btn { @apply inline-flex items-center justify-center w-10 h-10 sm:w-8 sm:h-8 shrink-0 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-white/[0.06] transition; }
     .icon-btn.danger { @apply hover:text-rose-300 hover:bg-rose-500/10; }
     .tbl { @apply w-full text-sm; }
     .tbl th { @apply text-left text-[11px] uppercase tracking-wider font-semibold text-slate-500 px-4 py-3 border-b border-white/[0.06] whitespace-nowrap bg-white/[0.01]; }
@@ -37,7 +79,7 @@
     .tbl tbody tr { @apply hover:bg-white/[0.02] transition-colors; }
     .badge { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border whitespace-nowrap; }
     .seg { @apply inline-flex p-1 bg-[#0a0e15] border border-white/10 rounded-lg gap-1 flex-wrap; }
-    .seg-btn { @apply px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 transition; }
+    .seg-btn { @apply px-3 py-2 sm:py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 transition; }
     .seg-btn.on { @apply bg-white/10 text-white; }
     .nav-item { @apply w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-slate-100 hover:bg-white/[0.04] transition; }
     .nav-item.active { @apply bg-indigo-500/10 text-indigo-200 ring-1 ring-indigo-400/20; }
@@ -53,6 +95,21 @@
   ::-webkit-scrollbar-track { background: transparent; }
   input[type=number]::-webkit-inner-spin-button { opacity: .4; }
   .tabular-nums { font-variant-numeric: tabular-nums; }
+  /* Tablas como tarjetas en iPhone */
+  @media (max-width: 639px) {
+    .tbl.tbl-m thead, .tbl.tbl-m tfoot { display: none; }
+    .tbl.tbl-m, .tbl.tbl-m tbody { display: block; width: 100%; }
+    .tbl.tbl-m tbody tr { display: flex; flex-direction: column; padding: .85rem 1rem; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .tbl.tbl-m td { display: flex; justify-content: space-between; align-items: center; gap: .75rem; padding: .2rem 0; border: 0; white-space: normal; text-align: right; min-width: 0; }
+    .tbl.tbl-m td[data-label]::before { content: attr(data-label); color: #64748b; font-size: .75rem; text-align: left; flex-shrink: 0; }
+    .tbl.tbl-m td.m-title { order: -1; display: block; text-align: left; font-size: .95rem; padding-bottom: .35rem; }
+    .tbl.tbl-m td.m-actions { justify-content: flex-end; padding-top: .35rem; margin-right: -.5rem; }
+    .tbl.tbl-m td:empty { display: none; }
+  }
+  .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 6px 0 4px; font-size: 10px; font-weight: 500; color: #64748b; min-height: 52px; }
+  .tab-item.active { color: #a5b4fc; }
+  .tab-item.active .tab-ic { background: rgba(99,102,241,.16); }
+  .tab-ic { display: flex; align-items: center; justify-content: center; width: 44px; height: 28px; border-radius: 999px; transition: background .15s; }
   @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
   .pop { animation: pop .18s ease-out; }
 </style>
@@ -86,25 +143,28 @@
 
   <!-- MAIN -->
   <div class="lg:pl-64 min-w-0">
-    <header class="sticky top-0 z-20 h-16 bg-[#070a10]/85 backdrop-blur border-b border-white/[0.06]">
-      <div class="h-full max-w-[1500px] mx-auto px-4 lg:px-8 flex items-center gap-3">
-        <button class="icon-btn lg:hidden -ml-1" data-action="sidebar-open" aria-label="Abrir menú"><i data-lucide="menu" class="w-5 h-5"></i></button>
-        <div class="min-w-0">
-          <h1 id="page-title" class="font-semibold text-white truncate">Dashboard</h1>
+    <header class="sticky top-0 z-20 pt-safe bg-[#070a10]/85 backdrop-blur-xl border-b border-white/[0.06]">
+      <div class="h-14 lg:h-16 max-w-[1500px] mx-auto px-safe flex items-center gap-2 sm:gap-3">
+        <div class="min-w-0 flex-1">
+          <h1 id="page-title" class="font-semibold text-white truncate text-[17px] lg:text-base">Dashboard</h1>
           <p id="page-sub" class="text-xs text-slate-500 truncate hidden sm:block"></p>
         </div>
-        <div class="ml-auto flex items-center gap-2">
-          <button class="btn btn-ghost" data-action="exp-new" title="Registrar gasto"><i data-lucide="receipt" class="w-4 h-4"></i><span class="hidden md:inline">Gasto</span></button>
-          <button class="btn btn-primary" data-action="sale-new" title="Registrar venta"><i data-lucide="shopping-cart" class="w-4 h-4"></i><span class="hidden md:inline">Nueva venta</span></button>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <button class="btn btn-ghost !px-3" data-action="exp-new" title="Registrar gasto" aria-label="Registrar gasto"><i data-lucide="receipt" class="w-[18px] h-[18px] sm:w-4 sm:h-4"></i><span class="hidden md:inline">Gasto</span></button>
+          <button class="btn btn-primary !px-3" data-action="sale-new" title="Registrar venta" aria-label="Registrar venta"><i data-lucide="shopping-cart" class="w-[18px] h-[18px] sm:w-4 sm:h-4"></i><span class="hidden md:inline">Nueva venta</span></button>
+          <button id="hdr-config" class="icon-btn lg:hidden" data-action="nav" data-view="config" aria-label="Configuración"><i data-lucide="settings" class="w-5 h-5"></i></button>
         </div>
       </div>
     </header>
-    <main id="view" class="max-w-[1500px] mx-auto px-4 lg:px-8 py-6 pb-16"></main>
+    <main id="view" class="max-w-[1500px] mx-auto px-safe py-4 sm:py-6 main-pad"></main>
   </div>
 </div>
 
+<!-- Barra de pestañas (iPhone) -->
+<nav id="tabbar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 pb-safe bg-[#0a0e15]/90 backdrop-blur-xl border-t border-white/[0.08] transition-transform duration-200" aria-label="Secciones"></nav>
+
 <div id="modal-root"></div>
-<div id="toast-root" class="fixed bottom-4 right-4 left-4 sm:left-auto z-[70] flex flex-col items-end gap-2 pointer-events-none"></div>
+<div id="toast-root" class="toast-pos fixed right-4 left-4 sm:left-auto z-[70] flex flex-col items-center sm:items-end gap-2 pointer-events-none"></div>
 
 <script>
 'use strict';
@@ -135,6 +195,8 @@ const ic = (n, c = 'w-4 h-4') => `<i data-lucide="${n}" class="${c}"></i>`;
 const byDateDesc = (a, b) => (b.date || '').localeCompare(a.date || '') || (b.createdAt || 0) - (a.createdAt || 0);
 const find = (arr, id) => arr.find(x => x.id === id);
 const ALL = { start: '0000-01-01', end: '9999-12-31' };
+const IS_IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const IS_STANDALONE = window.navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
 
 function money(n) {
   const cur = (S && S.settings && S.settings.currency) || 'MXN';
@@ -417,10 +479,11 @@ function toast(msg, type = 'ok') {
 
 function openModal({ title, icon = 'square-pen', body, wide }) {
   $('#modal-root').innerHTML = `
-  <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4">
+  <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 pt-safe">
     <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" data-close></div>
-    <div class="pop relative w-full ${wide ? 'sm:max-w-3xl' : 'sm:max-w-xl'} max-h-[92vh] overflow-y-auto bg-[#0e131d] border border-white/10 rounded-t-2xl sm:rounded-2xl shadow-2xl" role="dialog" aria-modal="true">
-      <div class="sticky top-0 z-10 flex items-center gap-3 px-5 py-4 border-b border-white/[0.06] bg-[#0e131d]/95 backdrop-blur">
+    <div class="pop sheet relative w-full ${wide ? 'sm:max-w-3xl' : 'sm:max-w-xl'} overflow-y-auto bg-[#0e131d] border border-white/10 rounded-t-2xl sm:rounded-2xl shadow-2xl" role="dialog" aria-modal="true">
+      <div class="sm:hidden flex justify-center pt-2"><span class="w-10 h-1 rounded-full bg-white/15"></span></div>
+      <div class="sticky top-0 z-10 flex items-center gap-3 px-5 py-3.5 sm:py-4 border-b border-white/[0.06] bg-[#0e131d]/95 backdrop-blur">
         <span class="w-8 h-8 rounded-lg bg-indigo-500/10 ring-1 ring-indigo-500/20 text-indigo-300 flex items-center justify-center">${ic(icon)}</span>
         <h3 class="font-semibold text-white flex-1 min-w-0 truncate">${title}</h3>
         <button class="icon-btn" data-close aria-label="Cerrar">${ic('x')}</button>
@@ -428,9 +491,10 @@ function openModal({ title, icon = 'square-pen', body, wide }) {
       ${body}
     </div>
   </div>`;
+  document.body.classList.add('modal-open');
   icons();
 }
-const closeModal = () => { $('#modal-root').innerHTML = ''; };
+const closeModal = () => { $('#modal-root').innerHTML = ''; document.body.classList.remove('modal-open', 'kb-open'); };
 
 function confirmBox({ title = '¿Confirmar acción?', message, confirmLabel = 'Eliminar', danger = true, onConfirm }) {
   openModal({
@@ -445,7 +509,7 @@ function confirmBox({ title = '¿Confirmar acción?', message, confirmLabel = 'E
 let dlCounter = 0;
 function fieldHTML(f, v) {
   let val = v[f.name] ?? f.default ?? '';
-  const span = f.full ? 'sm:col-span-2' : '';
+  const span = f.full ? 'col-span-2' : '';
   const dataF = `data-field="${f.name}"`;
   if (f.type === 'html') return `<div ${dataF} class="${span}">${f.html(v)}</div>`;
   if (f.type === 'checkbox') return `<label ${dataF} class="${span} flex items-start gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2.5 cursor-pointer hover:bg-white/[0.04]">
@@ -467,7 +531,7 @@ function fieldHTML(f, v) {
   } else {
     const isNum = f.type === 'number';
     const list = f.list && f.list.length ? `dl-${f.name}-${++dlCounter}` : '';
-    input = `<input type="${f.type || 'text'}" name="${f.name}" value="${esc(val)}" ${isNum ? `step="${f.step || 'any'}" inputmode="decimal"` : ''} ${f.min != null ? `min="${f.min}"` : ''} ${f.max != null ? `max="${f.max}"` : ''} ${list ? `list="${list}"` : ''} placeholder="${esc(f.placeholder || '')}" class="inp ${isNum ? 'tabular-nums' : ''}" ${req} ${dis} autocomplete="off">`
+    input = `<input type="${f.type || 'text'}" name="${f.name}" value="${esc(val)}" ${isNum ? `step="${f.step || 'any'}" inputmode="${f.step === '1' ? 'numeric' : 'decimal'}"` : ''} ${f.min != null ? `min="${f.min}"` : ''} ${f.max != null ? `max="${f.max}"` : ''} ${list ? `list="${list}"` : ''} placeholder="${esc(f.placeholder || '')}" class="inp ${isNum ? 'tabular-nums' : ''}" ${req} ${dis} autocomplete="off">`
       + (list ? `<datalist id="${list}">${f.list.map(o => `<option value="${esc(o)}"></option>`).join('')}</datalist>` : '');
   }
   return `<div ${dataF} class="${span}"><label class="lbl">${f.label}</label>${input}${f.hint ? `<p class="hint">${f.hint}</p>` : ''}</div>`;
@@ -514,7 +578,7 @@ function openForm({ title, icon, fields, values = {}, submitLabel = 'Guardar', o
   openModal({
     title, icon, wide,
     body: `<form id="mform" class="p-5 space-y-5">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">${fields.map(f => fieldHTML(f, values)).join('')}</div>
+      <div class="grid grid-cols-2 gap-3 sm:gap-4">${fields.map(f => fieldHTML(f, values)).join('')}</div>
       ${errorBox()}
       <div class="flex justify-end gap-2 pt-4 border-t border-white/[0.06]"><button type="button" class="btn btn-ghost" data-close>Cancelar</button><button type="submit" class="btn btn-primary">${ic('check')}${submitLabel}</button></div>
     </form>`
@@ -901,10 +965,10 @@ function openCardHistory(c) {
   const mv = (c.movements || []).slice().sort(byDateDesc);
   openModal({
     title: `Movimientos · ${esc(c.name)}`, icon: 'list', wide: true,
-    body: `<div class="p-5">${mv.length ? `<div class="overflow-x-auto -mx-5"><table class="tbl"><thead><tr><th>Fecha</th><th>Tipo</th><th>Descripción</th><th class="!text-right">Monto</th><th></th></tr></thead><tbody>
-      ${mv.map(m => `<tr><td>${fmtDate(m.date)}</td><td>${badge(TX[m.type === 'pago' ? 'pago_tarjeta' : 'cargo_tarjeta'], m.type === 'pago' ? 'Pago' : 'Cargo')}</td><td class="text-slate-400">${esc(m.note || '—')}</td>
-      <td class="text-right tabular-nums ${m.type === 'pago' ? 'text-emerald-300' : 'text-slate-200'}">${m.type === 'pago' ? '−' : '+'}${money(m.amount)}</td>
-      <td class="text-right"><button class="icon-btn" data-action="tx-edit" data-c="cardmov" data-id="${m.id}" data-parent="${c.id}">${ic('pencil')}</button><button class="icon-btn danger" data-action="tx-del" data-c="cardmov" data-id="${m.id}" data-parent="${c.id}">${ic('trash-2')}</button></td></tr>`).join('')}
+    body: `<div class="p-5">${mv.length ? `<div class="overflow-x-auto -mx-5"><table class="tbl tbl-m"><thead><tr><th>Fecha</th><th>Tipo</th><th>Descripción</th><th class="!text-right">Monto</th><th></th></tr></thead><tbody>
+      ${mv.map(m => `<tr><td data-label="Fecha">${fmtDate(m.date)}</td><td class="m-title">${badge(TX[m.type === 'pago' ? 'pago_tarjeta' : 'cargo_tarjeta'], m.type === 'pago' ? 'Pago' : 'Cargo')}</td><td data-label="Descripción" class="text-slate-400">${esc(m.note || '—')}</td>
+      <td data-label="Monto" class="text-right tabular-nums ${m.type === 'pago' ? 'text-emerald-300' : 'text-slate-200'}">${m.type === 'pago' ? '−' : '+'}${money(m.amount)}</td>
+      <td class="text-right m-actions"><button class="icon-btn" data-action="tx-edit" data-c="cardmov" data-id="${m.id}" data-parent="${c.id}">${ic('pencil')}</button><button class="icon-btn danger" data-action="tx-del" data-c="cardmov" data-id="${m.id}" data-parent="${c.id}">${ic('trash-2')}</button></td></tr>`).join('')}
       </tbody></table></div>` : empty('credit-card', 'Sin movimientos', 'Registra cargos o pagos para llevar el saldo utilizado al día.')}</div>`
   });
 }
@@ -946,14 +1010,14 @@ function empty(icon, title, text, btn = '') {
 }
 function statCard({ icon, tone, label, value, sub }) {
   const t = TONE[tone];
-  return `<div class="panel relative overflow-hidden p-5">
+  return `<div class="panel relative overflow-hidden p-4 sm:p-5 min-w-0">
     <div class="absolute inset-0 bg-gradient-to-br ${t.glow} to-transparent pointer-events-none"></div>
-    <div class="relative flex items-start justify-between gap-3">
-      <div class="min-w-0"><p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">${label}</p>
-      <p class="mt-2 text-2xl font-semibold text-white tabular-nums truncate">${value}</p></div>
-      <span class="shrink-0 w-10 h-10 rounded-xl ring-1 flex items-center justify-center ${t.ic}">${ic(icon, 'w-5 h-5')}</span>
+    <div class="relative flex items-start justify-between gap-2 sm:gap-3">
+      <div class="min-w-0"><p class="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider leading-tight">${label}</p>
+      <p class="mt-1.5 sm:mt-2 text-lg sm:text-2xl font-semibold text-white tabular-nums truncate">${value}</p></div>
+      <span class="shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl ring-1 flex items-center justify-center ${t.ic}">${ic(icon, 'w-4 h-4 sm:w-5 sm:h-5')}</span>
     </div>
-    <p class="relative mt-3 text-xs text-slate-500 leading-relaxed">${sub}</p></div>`;
+    <p class="relative mt-2 sm:mt-3 text-[11px] sm:text-xs text-slate-500 leading-relaxed">${sub}</p></div>`;
 }
 function sectionHead(icon, tone, title, sub, right = '') {
   return `<div class="flex flex-wrap items-center justify-between gap-3">
@@ -996,8 +1060,8 @@ function viewDashboard() {
   const invCost = sum(S.products, p => p.stock * p.cost);
   const low = S.products.filter(p => p.stock <= S.settings.lowStock).length;
   const cardsUsed = sum(S.cards, c => cardCalc(c).used);
-  return `
-  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+  return `${installBanner()}
+  <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
     ${statCard({ icon: 'wallet', tone: bal >= 0 ? 'emerald' : 'rose', label: 'Balance total actual', value: money(bal), sub: `<span class="text-emerald-400">+${money(mIn)}</span> entradas · <span class="text-rose-400">−${money(mOut)}</span> salidas este mes` })}
     ${statCard({ icon: 'arrow-down-left', tone: 'sky', label: 'Total por cobrar', value: money(dt.cobrar), sub: `Préstamos ${money(dt.prestamo)} · Ventas a crédito ${money(dt.credito_venta)}` })}
     ${statCard({ icon: 'arrow-up-right', tone: 'rose', label: 'Total por pagar', value: money(dt.deuda), sub: `${dt.deudaCount} deuda(s) activa(s)${cardsUsed > 0 ? ` · Tarjetas usadas ${money(cardsUsed)}` : ''}` })}
@@ -1015,6 +1079,14 @@ function viewDashboard() {
   </div>` : ''}`;
 }
 
+function installBanner() {
+  if (!IS_IOS || IS_STANDALONE || UI.hideInstall) return '';
+  return `<div class="panel p-4 mb-4 border-indigo-400/25 bg-indigo-500/[0.06] flex gap-3 items-start">
+    <img src="icons/apple-touch-icon.png" class="w-11 h-11 rounded-xl shrink-0" alt="">
+    <div class="flex-1 min-w-0"><p class="font-medium text-white text-sm">Instálala en tu iPhone</p>
+    <p class="text-xs text-slate-400 mt-1 leading-relaxed">En Safari toca ${ic('share', 'w-3.5 h-3.5 inline -mt-0.5 text-sky-300')} <b class="text-slate-200">Compartir</b> y elige <b class="text-slate-200">“Agregar a pantalla de inicio”</b>. Se abrirá a pantalla completa, como una app, y funcionará sin conexión.</p></div>
+    <button class="icon-btn -mr-2 -mt-2" data-action="hide-install" aria-label="Ocultar aviso">${ic('x')}</button></div>`;
+}
 function cardsModule() {
   const calc = S.cards.map(c => ({ c, k: cardCalc(c) }));
   const tl = sum(S.cards, 'limit'), tu = sum(calc, x => x.k.used); const util = tl > 0 ? tu / tl * 100 : 0;
@@ -1121,7 +1193,7 @@ function viewInventory() {
     <section class="panel p-5 2xl:sticky 2xl:top-20">
       ${sectionHead('shopping-cart', 'emerald', 'Registrar venta', 'Las unidades se descuentan del stock automáticamente')}
       ${S.products.length ? `<form id="sale-form" data-draft="sale" class="mt-5 space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-2 gap-4">${saleFields(null).map(f => fieldHTML(f, { date: today(), payType: 'contado', qty: 1 })).join('')}</div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 2xl:grid-cols-2 gap-3 sm:gap-4">${saleFields(null).map(f => fieldHTML(f, { date: today(), payType: 'contado', qty: 1 })).join('')}</div>
         ${errorBox()}
         <button type="submit" class="btn btn-primary w-full lg:w-auto 2xl:w-full lg:px-8">${ic('check')}Registrar venta</button>
         <p class="text-[11px] text-slate-500 text-center lg:text-left 2xl:text-center">Las ventas a crédito se crean automáticamente en <button type="button" class="underline hover:text-slate-300" data-action="nav" data-view="deudas">Préstamos y Deudas</button>.</p>
@@ -1131,21 +1203,21 @@ function viewInventory() {
       <div class="p-5 border-b border-white/[0.06]">${sectionHead('boxes', 'amber', 'Inventario', `${S.products.length} producto(s) · ${fmtInt(S.products.reduce((a, p) => a + p.stock, 0))} unidades`,
         `<div class="relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500">${ic('search', 'w-4 h-4')}</span><input id="inv-q" class="inp !py-1.5 pl-8 w-44" placeholder="Buscar…" value="${esc(UI.invQ)}" data-ui="invQ" data-live="1"></div>
          <button class="btn btn-primary btn-sm" data-action="product-new">${ic('plus', 'w-3.5 h-3.5')}Nuevo producto</button>`)}</div>
-      ${prods.length ? `<div class="overflow-x-auto"><table class="tbl"><thead><tr><th>Producto</th><th>Unidades</th><th class="!text-right">Costo</th><th class="!text-right">Precio venta</th><th class="!text-right">Margen u.</th><th class="!text-right">Valor inventario</th><th></th></tr></thead><tbody>
+      ${prods.length ? `<div class="overflow-x-auto"><table class="tbl tbl-m"><thead><tr><th>Producto</th><th>Unidades</th><th class="!text-right">Costo</th><th class="!text-right">Precio venta</th><th class="!text-right">Margen u.</th><th class="!text-right">Valor inventario</th><th></th></tr></thead><tbody>
         ${prods.map(p => {
           const m = r2(p.price - p.cost); const out = p.stock <= 0, isLow = !out && p.stock <= low;
           return `<tr>
-          <td class="!whitespace-normal min-w-[160px]"><p class="font-medium text-slate-100">${esc(p.name)}</p>${p.note ? `<p class="text-xs text-slate-500">${esc(p.note)}</p>` : ''}</td>
-          <td><div class="flex items-center gap-1">
-            <button class="icon-btn !w-7 !h-7" data-action="stock-dec" data-id="${p.id}" aria-label="Restar unidad">${ic('minus', 'w-3.5 h-3.5')}</button>
+          <td class="m-title !whitespace-normal min-w-[160px]"><p class="font-medium text-slate-100">${esc(p.name)}</p>${p.note ? `<p class="text-xs text-slate-500">${esc(p.note)}</p>` : ''}</td>
+          <td data-label="Unidades"><div class="flex items-center gap-1">
+            <button class="icon-btn sm:!w-7 sm:!h-7" data-action="stock-dec" data-id="${p.id}" aria-label="Restar unidad">${ic('minus', 'w-3.5 h-3.5')}</button>
             <input type="number" min="0" step="1" value="${p.stock}" data-stock="${p.id}" class="inp !w-20 !py-1 text-center tabular-nums font-semibold ${out ? '!text-rose-300' : isLow ? '!text-amber-300' : ''}" aria-label="Unidades de ${esc(p.name)}">
-            <button class="icon-btn !w-7 !h-7" data-action="stock-inc" data-id="${p.id}" aria-label="Sumar unidad">${ic('plus', 'w-3.5 h-3.5')}</button>
+            <button class="icon-btn sm:!w-7 sm:!h-7" data-action="stock-inc" data-id="${p.id}" aria-label="Sumar unidad">${ic('plus', 'w-3.5 h-3.5')}</button>
             ${out ? `<span class="badge ml-1 text-rose-300 bg-rose-500/10 border-rose-500/20">Agotado</span>` : isLow ? `<span class="badge ml-1 text-amber-300 bg-amber-500/10 border-amber-500/20">Bajo</span>` : ''}</div></td>
-          <td class="text-right tabular-nums text-slate-400">${money(p.cost)}</td>
-          <td class="text-right tabular-nums text-slate-100">${money(p.price)}</td>
-          <td class="text-right tabular-nums ${m >= 0 ? 'text-emerald-300' : 'text-rose-300'}">${money(m)} <span class="text-[11px] text-slate-500">${p.price > 0 ? (m / p.price * 100).toFixed(0) + '%' : ''}</span></td>
-          <td class="text-right tabular-nums">${money(p.stock * p.cost)}</td>
-          <td class="text-right"><button class="icon-btn" title="Editar" data-action="product-edit" data-id="${p.id}">${ic('pencil')}</button><button class="icon-btn danger" title="Eliminar" data-action="product-del" data-id="${p.id}">${ic('trash-2')}</button></td></tr>`;
+          <td data-label="Costo" class="text-right tabular-nums text-slate-400">${money(p.cost)}</td>
+          <td data-label="Precio venta" class="text-right tabular-nums text-slate-100">${money(p.price)}</td>
+          <td data-label="Margen unitario" class="text-right tabular-nums ${m >= 0 ? 'text-emerald-300' : 'text-rose-300'}"><span>${money(m)} <span class="text-[11px] text-slate-500">${p.price > 0 ? (m / p.price * 100).toFixed(0) + '%' : ''}</span></span></td>
+          <td data-label="Valor inventario" class="text-right tabular-nums">${money(p.stock * p.cost)}</td>
+          <td class="text-right m-actions"><button class="icon-btn" title="Editar" data-action="product-edit" data-id="${p.id}">${ic('pencil')}</button><button class="icon-btn danger" title="Eliminar" data-action="product-del" data-id="${p.id}">${ic('trash-2')}</button></td></tr>`;
         }).join('')}</tbody>
         <tfoot><tr><td class="px-4 py-3 text-xs text-slate-500">Totales</td><td class="px-4 py-3 font-semibold tabular-nums">${fmtInt(prods.reduce((a, p) => a + p.stock, 0))} u.</td><td colspan="3"></td><td class="px-4 py-3 text-right font-semibold tabular-nums">${money(sum(prods, p => p.stock * p.cost))}</td><td></td></tr></tfoot></table></div>`
       : empty('package', q ? 'Sin resultados' : 'Inventario vacío', q ? 'Ningún producto coincide con la búsqueda.' : 'Agrega productos con el nombre que quieras, sus unidades, costo y precio de venta.', q ? '' : `<button class="btn btn-primary" data-action="product-new">${ic('plus')}Nuevo producto</button>`)}
@@ -1155,14 +1227,14 @@ function viewInventory() {
     <div class="p-5 border-b border-white/[0.06]">${sectionHead('scroll-text', 'sky', 'Historial de ventas', `${sales.length} venta(s) · ${fmtInt(st.units)} u. · ${money(st.total)} · margen ${money(st.margin)}`,
       `${seg('salesPeriod', UI.salesPeriod, [['semana', 'Semana'], ['mes', 'Mes'], ['anio', 'Año'], ['total', 'Todo']])}
        <div class="relative"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500">${ic('search', 'w-4 h-4')}</span><input id="sales-q" class="inp !py-1.5 pl-8 w-44" placeholder="Producto o cliente…" value="${esc(UI.salesQ)}" data-ui="salesQ" data-live="1"></div>`)}</div>
-    ${sales.length ? `<div class="overflow-x-auto"><table class="tbl"><thead><tr><th>Fecha</th><th>Producto</th><th class="!text-right">Cant.</th><th class="!text-right">P. unit.</th><th class="!text-right">Total</th><th class="!text-right">Margen</th><th>Tipo</th><th></th></tr></thead><tbody>
+    ${sales.length ? `<div class="overflow-x-auto"><table class="tbl tbl-m"><thead><tr><th>Fecha</th><th>Producto</th><th class="!text-right">Cant.</th><th class="!text-right">P. unit.</th><th class="!text-right">Total</th><th class="!text-right">Margen</th><th>Tipo</th><th></th></tr></thead><tbody>
       ${sales.map(s => {
         const d = s.debtId ? find(S.debts, s.debtId) : null; const c = d ? debtCalc(d) : null;
-        return `<tr><td class="text-slate-400">${fmtDate(s.date)}</td><td class="!whitespace-normal min-w-[140px]"><p class="text-slate-100">${esc(s.productName)}</p>${s.note ? `<p class="text-xs text-slate-500">${esc(s.note)}</p>` : ''}</td>
-        <td class="text-right tabular-nums">${s.qty}</td><td class="text-right tabular-nums text-slate-400">${money(s.unitPrice)}</td><td class="text-right tabular-nums font-medium text-white">${money(s.total)}</td>
-        <td class="text-right tabular-nums text-emerald-300">${money(s.total - s.qty * s.unitCost)}</td>
-        <td>${s.payType === 'credito' ? `<div class="flex items-center gap-1.5">${badge(TX.venta_credito, 'Crédito')}<span class="text-xs text-slate-400 truncate max-w-[110px]">${esc(s.client)}</span>${c ? badge(STATUS[c.status], c.status) : ''}</div>` : badge(TX.venta, 'Contado')}</td>
-        <td class="text-right"><button class="icon-btn" title="Editar" data-action="sale-edit" data-id="${s.id}">${ic('pencil')}</button><button class="icon-btn danger" title="Eliminar" data-action="sale-del" data-id="${s.id}">${ic('trash-2')}</button></td></tr>`;
+        return `<tr><td data-label="Fecha" class="text-slate-400">${fmtDate(s.date)}</td><td class="m-title !whitespace-normal min-w-[140px]"><p class="text-slate-100">${esc(s.productName)}</p>${s.note ? `<p class="text-xs text-slate-500">${esc(s.note)}</p>` : ''}</td>
+        <td data-label="Cantidad" class="text-right tabular-nums">${s.qty}</td><td data-label="Precio unitario" class="text-right tabular-nums text-slate-400">${money(s.unitPrice)}</td><td data-label="Total" class="text-right tabular-nums font-medium text-white">${money(s.total)}</td>
+        <td data-label="Margen" class="text-right tabular-nums text-emerald-300">${money(s.total - s.qty * s.unitCost)}</td>
+        <td data-label="Tipo">${s.payType === 'credito' ? `<div class="flex items-center gap-1.5">${badge(TX.venta_credito, 'Crédito')}<span class="text-xs text-slate-400 truncate max-w-[110px]">${esc(s.client)}</span>${c ? badge(STATUS[c.status], c.status) : ''}</div>` : badge(TX.venta, 'Contado')}</td>
+        <td class="text-right m-actions"><button class="icon-btn" title="Editar" data-action="sale-edit" data-id="${s.id}">${ic('pencil')}</button><button class="icon-btn danger" title="Eliminar" data-action="sale-del" data-id="${s.id}">${ic('trash-2')}</button></td></tr>`;
       }).join('')}</tbody></table></div>` : empty('shopping-bag', 'Sin ventas', 'No hay ventas registradas en este periodo.')}
   </section>`;
 }
@@ -1185,7 +1257,7 @@ function viewDebts() {
     .sort((a, b) => (a.c.status === 'Pagado') - (b.c.status === 'Pagado') || (b.d.startDate || '').localeCompare(a.d.startDate || ''));
   const tabs = [['all', 'Todos'], ['prestamo', 'Préstamos otorgados'], ['credito_venta', 'Ventas a crédito'], ['deuda', 'Mis deudas']];
   return `
-  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+  <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
     ${statCard({ icon: 'hand-coins', tone: 'sky', label: 'Préstamos por cobrar', value: money(dt.prestamo), sub: 'Dinero que prestaste, saldo pendiente' })}
     ${statCard({ icon: 'shopping-cart', tone: 'violet', label: 'Ventas a crédito', value: money(dt.credito_venta), sub: 'Pendiente de cobro a clientes' })}
     ${statCard({ icon: 'landmark', tone: 'rose', label: 'Mis deudas por pagar', value: money(dt.deuda), sub: `${dt.deudaCount} deuda(s) activa(s)` })}
@@ -1271,7 +1343,7 @@ function viewExpenses() {
   if (E.period !== 'custom') {
     const pr = rangeFor(E.period, addDays(r.start, -1)); const pt = sum(S.expenses.filter(e => inRange(e.date, pr)), 'amount');
     const ch = pt > 0 ? (total - pt) / pt * 100 : null;
-    prev = `${money(pt)}${ch != null ? ` <span class="${ch > 0 ? 'text-rose-300' : 'text-emerald-300'}">(${ch > 0 ? '+' : ''}${ch.toFixed(0)}%)</span>` : ''}`;
+    prev = `${money(pt)}${ch != null ? `<span class="block text-[11px] font-medium ${ch > 0 ? 'text-rose-300' : 'text-emerald-300'}">${ch > 0 ? '+' : ''}${ch.toFixed(0)}% este periodo</span>` : ''}`;
   }
   const cats = {}; list.forEach(e => { const k = e.category || 'General'; cats[k] = (cats[k] || 0) + e.amount; });
   const catArr = Object.entries(cats).sort((a, b) => b[1] - a[1]); const cmax = catArr[0]?.[1] || 1;
@@ -1290,7 +1362,7 @@ function viewExpenses() {
     <section class="panel p-5 xl:sticky xl:top-20">
       ${sectionHead('receipt', 'rose', 'Registrar gasto', 'Pasajes, comidas, insumos diarios…')}
       <form id="exp-form" data-draft="exp" class="mt-5 space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">${movFields('expenses').map(f => fieldHTML(f, { date: today() })).join('')}</div>
+        <div class="grid grid-cols-2 gap-3 sm:gap-4">${movFields('expenses').map(f => fieldHTML(f, { date: today() })).join('')}</div>
         ${errorBox()}
         <button type="submit" class="btn btn-primary w-full">${ic('plus')}Agregar gasto</button>
       </form>
@@ -1309,10 +1381,10 @@ function viewExpenses() {
           <span class="tabular-nums text-slate-200 w-28 text-right">${money(v)} <span class="text-[11px] text-slate-500">${(v / total * 100).toFixed(0)}%</span></span></div>`).join('')}</div></div>` : ''}
       </section>
       <section class="panel overflow-hidden">
-        ${list.length ? `<div class="overflow-x-auto"><table class="tbl"><thead><tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th class="!text-right">Monto</th><th></th></tr></thead><tbody>
-          ${list.map(e => `<tr><td class="text-slate-400">${fmtDate(e.date)}</td><td class="!whitespace-normal min-w-[140px]"><p class="text-slate-100">${esc(e.concept)}</p>${e.note ? `<p class="text-xs text-slate-500">${esc(e.note)}</p>` : ''}</td>
-          <td><span class="badge text-slate-300 bg-white/5 border-white/10">${ic('tag', 'w-3 h-3')}${esc(e.category || 'General')}</span></td><td class="text-right tabular-nums text-rose-300 font-medium">−${money(e.amount)}</td>
-          <td class="text-right"><button class="icon-btn" data-action="tx-edit" data-c="expenses" data-id="${e.id}">${ic('pencil')}</button><button class="icon-btn danger" data-action="tx-del" data-c="expenses" data-id="${e.id}">${ic('trash-2')}</button></td></tr>`).join('')}
+        ${list.length ? `<div class="overflow-x-auto"><table class="tbl tbl-m"><thead><tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th class="!text-right">Monto</th><th></th></tr></thead><tbody>
+          ${list.map(e => `<tr><td data-label="Fecha" class="text-slate-400">${fmtDate(e.date)}</td><td class="m-title !whitespace-normal min-w-[140px]"><p class="text-slate-100">${esc(e.concept)}</p>${e.note ? `<p class="text-xs text-slate-500">${esc(e.note)}</p>` : ''}</td>
+          <td data-label="Categoría"><span class="badge text-slate-300 bg-white/5 border-white/10">${ic('tag', 'w-3 h-3')}${esc(e.category || 'General')}</span></td><td data-label="Monto" class="text-right tabular-nums text-rose-300 font-medium">−${money(e.amount)}</td>
+          <td class="text-right m-actions"><button class="icon-btn" data-action="tx-edit" data-c="expenses" data-id="${e.id}">${ic('pencil')}</button><button class="icon-btn danger" data-action="tx-del" data-c="expenses" data-id="${e.id}">${ic('trash-2')}</button></td></tr>`).join('')}
           </tbody></table></div>` : empty('receipt', 'Sin gastos en este periodo', 'Usa las flechas o el selector de fecha para consultar periodos anteriores. Tu historial nunca se reinicia.')}
       </section>
       <section class="panel p-5">
@@ -1363,7 +1435,7 @@ function viewReports() {
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 mt-4">
+  <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 mt-4">
     ${statCard({ icon: 'arrow-down-left', tone: 'emerald', label: 'Entradas', value: money(inn), sub: `${rows.filter(t => t.sign > 0).length} movimiento(s)` })}
     ${statCard({ icon: 'arrow-up-right', tone: 'rose', label: 'Salidas', value: money(out), sub: `${rows.filter(t => t.sign < 0).length} movimiento(s)` })}
     ${statCard({ icon: 'scale', tone: inn - out >= 0 ? 'sky' : 'rose', label: 'Flujo neto', value: money(inn - out), sub: rangeLabel(R.period, r) })}
@@ -1371,12 +1443,12 @@ function viewReports() {
   </div>
   <section class="panel mt-4 overflow-hidden">
     <div class="px-5 py-4 border-b border-white/[0.06] flex flex-wrap items-center justify-between gap-2"><h2 class="h2">Transacciones</h2><span class="sub">${rows.length} resultado(s) · Balance general actual <b class="text-slate-300">${money(balance())}</b></span></div>
-    ${rows.length ? `<div class="overflow-x-auto"><table class="tbl"><thead><tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Categoría</th><th class="!text-right">Monto</th><th></th></tr></thead><tbody>
-      ${shown.map(t => `<tr><td class="text-slate-400">${fmtDate(t.date)}</td><td>${badge(TX[t.type])}</td>
-        <td class="!whitespace-normal min-w-[180px]"><p class="text-slate-100">${esc(t.concept)}</p>${t.person && !String(t.concept).includes(t.person) ? `<p class="text-xs text-slate-500">${esc(t.person)}</p>` : ''}${t.note && t.type !== 'interes' ? `<p class="text-xs text-slate-500">${esc(t.note)}</p>` : ''}</td>
-        <td class="text-slate-400">${esc(t.category)}</td>
-        <td class="text-right tabular-nums font-medium ${t.sign > 0 ? 'text-emerald-300' : t.sign < 0 ? 'text-rose-300' : 'text-slate-400'}">${t.sign > 0 ? '+' : t.sign < 0 ? '−' : ''}${money(t.amount)}${t.sign === 0 ? `<p class="text-[10px] font-normal text-slate-500">sin efecto en caja</p>` : ''}</td>
-        <td class="text-right"><button class="icon-btn" title="Editar" data-action="tx-edit" data-c="${t.ref.c}" data-id="${t.ref.id}" data-parent="${t.ref.parent || ''}">${ic('pencil')}</button><button class="icon-btn danger" title="Eliminar" data-action="tx-del" data-c="${t.ref.c}" data-id="${t.ref.id}" data-parent="${t.ref.parent || ''}">${ic('trash-2')}</button></td></tr>`).join('')}
+    ${rows.length ? `<div class="overflow-x-auto"><table class="tbl tbl-m"><thead><tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Categoría</th><th class="!text-right">Monto</th><th></th></tr></thead><tbody>
+      ${shown.map(t => `<tr><td data-label="Fecha" class="text-slate-400">${fmtDate(t.date)}</td><td data-label="Tipo">${badge(TX[t.type])}</td>
+        <td class="m-title !whitespace-normal min-w-[180px]"><p class="text-slate-100">${esc(t.concept)}</p>${t.person && !String(t.concept).includes(t.person) ? `<p class="text-xs text-slate-500">${esc(t.person)}</p>` : ''}${t.note && t.type !== 'interes' ? `<p class="text-xs text-slate-500">${esc(t.note)}</p>` : ''}</td>
+        <td data-label="Categoría" class="text-slate-400">${esc(t.category)}</td>
+        <td data-label="Monto" class="text-right tabular-nums font-medium ${t.sign > 0 ? 'text-emerald-300' : t.sign < 0 ? 'text-rose-300' : 'text-slate-400'}"><span>${t.sign > 0 ? '+' : t.sign < 0 ? '−' : ''}${money(t.amount)}${t.sign === 0 ? `<span class="block text-[10px] font-normal text-slate-500">sin efecto en caja</span>` : ''}</span></td>
+        <td class="text-right m-actions"><button class="icon-btn" title="Editar" data-action="tx-edit" data-c="${t.ref.c}" data-id="${t.ref.id}" data-parent="${t.ref.parent || ''}">${ic('pencil')}</button><button class="icon-btn danger" title="Eliminar" data-action="tx-del" data-c="${t.ref.c}" data-id="${t.ref.id}" data-parent="${t.ref.parent || ''}">${ic('trash-2')}</button></td></tr>`).join('')}
       </tbody></table></div>
       ${rows.length > shown.length ? `<div class="p-4 text-center"><button class="btn btn-ghost btn-sm" data-action="rep-more">Mostrar más (${rows.length - shown.length} restantes)</button></div>` : ''}`
     : empty('history', 'Sin transacciones', 'No hay movimientos que coincidan con los filtros seleccionados.')}
@@ -1388,12 +1460,12 @@ function exportCSV() {
   const q = s => `"${String(s ?? '').replace(/"/g, '""')}"`;
   const lines = [['Fecha', 'Tipo', 'Concepto', 'Persona', 'Categoría', 'Monto', 'Efecto en caja', 'Nota'].map(q).join(',')]
     .concat(rows.map(t => [t.date, TX[t.type].label, t.concept, t.person || '', t.category, t.amount.toFixed(2), (t.sign * t.amount).toFixed(2), t.note || ''].map(q).join(',')));
-  download(`reporte-${today()}.csv`, '﻿' + lines.join('\r\n'), 'text/csv;charset=utf-8');
+  saveFile(`reporte-${today()}.csv`, '\ufeff' + lines.join('\r\n'), 'text/csv');
 }
 
 /* ---------- CONFIGURACIÓN ---------- */
 const SETTINGS_FIELDS = () => [
-  { name: 'currency', label: 'Moneda', type: 'select', options: [['MXN', 'Peso mexicano (MXN)'], ['USD', 'Dólar (USD)'], ['EUR', 'Euro (EUR)'], ['COP', 'Peso colombiano (COP)'], ['ARS', 'Peso argentino (ARS)'], ['CLP', 'Peso chileno (CLP)'], ['PEN', 'Sol peruano (PEN)'], ['GTQ', 'Quetzal (GTQ)']].map(([value, label]) => ({ value, label })) },
+  { name: 'currency', label: 'Moneda', type: 'select', full: true, options: [['MXN', 'Peso mexicano (MXN)'], ['USD', 'Dólar (USD)'], ['EUR', 'Euro (EUR)'], ['COP', 'Peso colombiano (COP)'], ['ARS', 'Peso argentino (ARS)'], ['CLP', 'Peso chileno (CLP)'], ['PEN', 'Sol peruano (PEN)'], ['GTQ', 'Quetzal (GTQ)']].map(([value, label]) => ({ value, label })) },
   { name: 'initialBalance', label: 'Saldo inicial (efectivo/cuentas)', type: 'number', hint: 'Punto de partida del balance total' },
   { name: 'lowStock', label: 'Alerta de stock bajo (unidades)', type: 'number', step: '1', min: 0 }
 ];
@@ -1403,7 +1475,7 @@ function viewSettings() {
   return `<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
     <section class="panel p-5">
       ${sectionHead('settings', 'indigo', 'Preferencias', 'Moneda, saldo inicial y alertas')}
-      <form id="settings-form" class="mt-5 space-y-4"><div class="grid grid-cols-1 sm:grid-cols-2 gap-4">${SETTINGS_FIELDS().map(f => fieldHTML(f, S.settings)).join('')}</div>${errorBox()}
+      <form id="settings-form" class="mt-5 space-y-4"><div class="grid grid-cols-2 gap-3 sm:gap-4">${SETTINGS_FIELDS().map(f => fieldHTML(f, S.settings)).join('')}</div>${errorBox()}
         <div class="flex justify-end"><button type="submit" class="btn btn-primary">${ic('check')}Guardar cambios</button></div></form>
     </section>
     <section class="panel p-5">
@@ -1411,10 +1483,20 @@ function viewSettings() {
       <p class="text-sm text-slate-400 mt-4 leading-relaxed">Exporta un archivo JSON con toda tu información para guardarlo o pasarlo a otro dispositivo. Al importar, los datos actuales se reemplazan por los del archivo.</p>
       <div class="flex flex-wrap gap-2 mt-4">
         <button class="btn btn-primary" data-action="export-json">${ic('download')}Exportar copia de seguridad (JSON)</button>
-        <label class="btn btn-ghost cursor-pointer">${ic('upload')}Importar datos<input type="file" accept="application/json,.json" id="import-file" class="sr-only"></label>
+        <label class="btn btn-ghost cursor-pointer">${ic('upload')}Importar datos<input type="file" accept=".json,application/json,text/plain" id="import-file" class="sr-only"></label>
       </div>
       <p class="text-xs text-slate-500 mt-3">Último respaldo: ${S.settings.lastBackup ? new Date(S.settings.lastBackup).toLocaleString('es-MX') : 'nunca'} · Tamaño: ${size} KB</p>
       <div class="grid grid-cols-3 gap-2 mt-5">${cnt('Productos', S.products.length)}${cnt('Ventas', S.sales.length)}${cnt('Préstamos/deudas', S.debts.length)}${cnt('Gastos', S.expenses.length)}${cnt('Ingresos', S.incomes.length)}${cnt('Tarjetas', S.cards.length)}</div>
+    </section>
+    <section class="panel p-5 lg:col-span-2">
+      ${sectionHead('smartphone', 'sky', 'Usar en iPhone', IS_STANDALONE ? 'Abierta como app desde la pantalla de inicio' : (IS_IOS ? 'Abierta en Safari' : 'Ábrela desde Safari en tu iPhone'),
+        IS_STANDALONE ? `<span class="badge text-emerald-300 bg-emerald-500/10 border-emerald-500/20">${ic('circle-check', 'w-3 h-3')}Instalada</span>` : '')}
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4 text-sm">
+        <div class="mini !p-3.5"><p class="text-slate-200 font-medium flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-sky-500/15 text-sky-300 text-xs flex items-center justify-center">1</span>Abre el enlace en Safari</p><p class="text-xs text-slate-500 mt-1.5 leading-relaxed">La opción de instalar solo aparece en Safari.</p></div>
+        <div class="mini !p-3.5"><p class="text-slate-200 font-medium flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-sky-500/15 text-sky-300 text-xs flex items-center justify-center">2</span>Toca ${ic('share', 'w-4 h-4 text-sky-300')} Compartir</p><p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Elige <b class="text-slate-300">“Agregar a pantalla de inicio”</b> y confirma con <b class="text-slate-300">Agregar</b>.</p></div>
+        <div class="mini !p-3.5"><p class="text-slate-200 font-medium flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-sky-500/15 text-sky-300 text-xs flex items-center justify-center">3</span>Ábrela desde el ícono</p><p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Se abre a pantalla completa y funciona sin internet tras la primera apertura.</p></div>
+      </div>
+      <div class="mt-3 rounded-xl border border-amber-500/20 bg-amber-500/[0.05] p-3.5 text-xs text-amber-100/90 leading-relaxed flex gap-2.5">${ic('info', 'w-4 h-4 shrink-0 text-amber-300 mt-0.5')}<span>En iOS, la app instalada y Safari guardan sus datos <b>por separado</b>. Si ya registraste información en Safari, expórtala aquí y luego impórtala dentro de la app instalada. Guarda copias de seguridad con frecuencia en <b>Archivos / iCloud Drive</b>: borrar la app o los datos de Safari también borra la información.</span></div>
     </section>
     <section class="panel p-5 lg:col-span-2">
       ${sectionHead('triangle-alert', 'rose', 'Zona de datos', 'Acciones que reemplazan tu información',
@@ -1431,10 +1513,21 @@ function download(name, content, type) {
   a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
-function exportJSON() {
-  S.settings.lastBackup = new Date().toISOString(); save();
-  download(`respaldo-finanzas-${today()}.json`, JSON.stringify({ app: 'finanzas-inventario', version: 1, exportedAt: S.settings.lastBackup, data: S }, null, 2), 'application/json');
-  toast('Copia de seguridad exportada'); render();
+/* En iPhone usa la hoja de Compartir (Guardar en Archivos / iCloud Drive / AirDrop / WhatsApp…). */
+async function saveFile(name, content, type) {
+  let file = null;
+  try { file = new File([content], name, { type }); } catch { /* navegadores antiguos */ }
+  if (IS_IOS && file && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: name }); return true; }
+    catch (e) { if (e && e.name === 'AbortError') return false; }
+  }
+  download(name, content, type); return true;
+}
+async function exportJSON() {
+  const ts = new Date().toISOString();
+  const content = JSON.stringify({ app: 'finanzas-inventario', version: 1, exportedAt: ts, data: { ...S, settings: { ...S.settings, lastBackup: ts } } }, null, 2);
+  const ok = await saveFile(`respaldo-finanzas-${today()}.json`, content, 'application/json');
+  if (ok) { S.settings.lastBackup = ts; save(); toast('Copia de seguridad lista'); render(); }
 }
 function importFile(file) {
   if (!file) return;
@@ -1491,6 +1584,12 @@ function renderNav() {
   const badges = { inventario: low ? `<span class="ml-auto text-[10px] px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-300">${low}</span>` : '', deudas: dt.cobrarCount + dt.deudaCount ? `<span class="ml-auto text-[10px] px-1.5 py-0.5 rounded-md bg-white/5 text-slate-400">${dt.cobrarCount + dt.deudaCount}</span>` : '' };
   $('#nav').innerHTML = Object.entries(VIEWS).map(([k, v], i) => `${k === 'config' ? '<div class="h-px bg-white/[0.06] my-3"></div>' : ''}
     <button class="nav-item ${UI.view === k ? 'active' : ''}" data-action="nav" data-view="${k}">${ic(v.icon, 'w-[18px] h-[18px]')}<span class="truncate">${v.nav}</span>${badges[k] || ''}</button>`).join('');
+  const TABS = [['dashboard', 'Inicio', 'layout-dashboard'], ['inventario', 'Inventario', 'package'], ['deudas', 'Deudas', 'hand-coins'], ['gastos', 'Gastos', 'receipt'], ['reportes', 'Reporte', 'history']];
+  $('#tabbar').innerHTML = `<div class="flex max-w-lg mx-auto px-1">${TABS.map(([k, l, i]) => `
+    <button class="tab-item ${UI.view === k ? 'active' : ''}" data-action="nav" data-view="${k}" ${UI.view === k ? 'aria-current="page"' : ''}>
+      <span class="tab-ic relative">${ic(i, 'w-[22px] h-[22px]')}${k === 'inventario' && low ? '<span class="absolute top-0.5 right-2.5 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-[#0a0e15]"></span>' : ''}</span>${l}</button>`).join('')}</div>`;
+  $('#hdr-config').classList.toggle('!text-indigo-300', UI.view === 'config');
+  $('#hdr-config').classList.toggle('!bg-indigo-500/10', UI.view === 'config');
 }
 
 function render() {
@@ -1571,6 +1670,7 @@ const ACTIONS = {
   'card-history': el => { const c = find(S.cards, el.dataset.id); c && openCardHistory(c); },
   'tx-edit': el => editRef(el.dataset),
   'tx-del': el => deleteRef(el.dataset),
+  'hide-install': () => { UI.hideInstall = true; saveUI(); render(); },
   'rep-more': () => { UI.repLimit += 200; render(); },
   'rep-clear': () => { Object.assign(UI.rep, { type: 'all', cat: 'all', q: '' }); saveUI(); render(); },
   'export-csv': exportCSV, 'export-json': exportJSON, 'load-sample': loadSample,
@@ -1598,6 +1698,18 @@ window.addEventListener('storage', e => { if (e.key === STORAGE_KEY) { S = load(
 /* Recalcula intereses automáticamente al cambiar el día */
 let lastDay = today();
 setInterval(() => { if (today() !== lastDay) { lastDay = today(); commit(); } }, 60000);
+
+/* iPhone: oculta la barra de pestañas mientras el teclado está abierto */
+const isTextInput = el => !!el && (el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || (el.tagName === 'INPUT' && !['checkbox', 'radio', 'button', 'submit', 'file', 'range'].includes(el.type)));
+document.addEventListener('focusin', e => { if (isTextInput(e.target) && window.innerWidth < 1024) document.body.classList.add('kb-open'); });
+document.addEventListener('focusout', () => setTimeout(() => { if (!isTextInput(document.activeElement)) document.body.classList.remove('kb-open'); }, 80));
+document.addEventListener('visibilitychange', () => { if (!document.hidden && today() !== lastDay) { lastDay = today(); commit(); } });
+
+/* Modo sin conexión y almacenamiento persistente */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => console.warn('Service worker:', e)));
+}
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 
 /* Inicio */
 syncInterests(); save(); render();
